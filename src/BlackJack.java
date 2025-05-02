@@ -30,7 +30,7 @@ public class BlackJack {
             // Menu inicial del juego
             System.out.println("\n\n=============================================");
 
-            System.out.println("\n♣️ == BLACK JACK == ♦️");
+            System.out.println("♣️ == BLACK JACK == ♦️");
 
             System.out.println("1. Nueva partida");
 
