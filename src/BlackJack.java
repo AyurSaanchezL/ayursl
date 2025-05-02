@@ -11,9 +11,10 @@ public class BlackJack {
     public static final String ANSI_BLUE = "\u001B[34m";
     public static final String ANSI_CYAN = "\u001B[36m";
     public static final String ANSI_RESET = "\u001B[0m";
+    
+    public static Scanner sc = new Scanner(System.in);
 
     public static void main(String[] args) throws InterruptedException {
-        Scanner sc = new Scanner(System.in);
         Random r = new Random();
 
 
@@ -23,7 +24,7 @@ public class BlackJack {
         int nuevaCarta2;
 
         do{ // --> refactorización = crear una función para cada opción y así evitar la repetición de código (switch)
-            int pts1 = 0; // --> refactorización = renombrar variables
+            int puntosJugador1 = 0; // --> refactorización = renombrar variables
             int pts2 = 0;
 
             // Menu inicial del juego
@@ -51,10 +52,10 @@ public class BlackJack {
                 System.out.println("\n🎲 -= Nueva Partida =- 🎴");
 
                 // Randomizador de cartas
-                int cartaDos=0;
+                int cartaDos;
                 int cartaUno = r.nextInt(12) + 1;
                 nuevaCarta1 = r.nextInt(12) + 1;
-                pts1 += cartaUno + nuevaCarta1;
+                puntosJugador1 += cartaUno + nuevaCarta1;
 
                 cartaDos = r.nextInt(12) + 1;
                 nuevaCarta2 = r.nextInt(12) + 1;
@@ -63,30 +64,28 @@ public class BlackJack {
                 // Mano del jugador
                 System.out.println("Tu mano: ");
                 System.out.println(cartasDobles(cartaUno, nuevaCarta1));
-                System.out.println("Llevas " + pts1 + " puntos");
+                System.out.println("Llevas " + puntosJugador1 + " puntos");
 
                 // Mano del jugador
                 System.out.println("Mano del crupier: ");
                 System.out.println(cartasDobles(cartaDos, nuevaCarta2));
                 System.out.println("Crupier: " + pts2 + " puntos");
 
-                if (pts1 < 21){
+                if (puntosJugador1 < 21){
                     // Preguntar si continuar
-                    System.out.print(ANSI_BLUE + "¿Continuar? (s|n): " + ANSI_RESET);
-                    continuar = sc.nextLine();
+                    continuar = quiereContinuar();
 
                     // TERMINA LA RONDA 1, EMPIEZAN LAS DEMÁS
 
                     while (!continuar.equalsIgnoreCase("s") && !continuar.equalsIgnoreCase("n")) {
                         System.out.println("❌ Opción no válida");
-                        System.out.print(ANSI_BLUE + "¿Continuar? (s|n): " + ANSI_RESET);
-                        continuar = sc.nextLine();
+                        continuar = quiereContinuar();
                     }
                     Thread.sleep(700);
-                    while (continuar.equals("s") && pts1 < 21){
+                    while (continuar.equals("s") && puntosJugador1 < 21){
                         System.out.println("\n...........................");
                         nuevaCarta1 = r.nextInt(12) + 1;
-                        pts1 += nuevaCarta1;
+                        puntosJugador1 += nuevaCarta1;
 
                         if (pts2 < 17){
                             nuevaCarta2 = r.nextInt(12) + 1;
@@ -96,7 +95,7 @@ public class BlackJack {
                         // Mano del jugador
                         System.out.println("Tu mano: ");
                         System.out.println(mostrarCarta(nuevaCarta1));
-                        System.out.println("Llevas " + pts1 + " puntos");
+                        System.out.println("Llevas " + puntosJugador1 + " puntos");
 
                         // Mano del crupier (solo si ha robado cartas)
                         if (pts2 < 17) {
@@ -105,14 +104,12 @@ public class BlackJack {
                         System.out.println("Crupier: " + pts2 + " puntos");
 
                         // Preguntar si continuar
-                        if (pts1 <21){
-                            System.out.print(ANSI_BLUE + "¿Continuar? (s|n): " + ANSI_RESET);
-                            continuar = sc.nextLine();
+                        if (puntosJugador1 <21){
+                            continuar = quiereContinuar();
 
                             while (!continuar.equalsIgnoreCase("s") && !continuar.equalsIgnoreCase("n")) {
                                 System.out.println("❌ Opción no válida");
-                                System.out.print(ANSI_BLUE + "¿Continuar? (s|n): " + ANSI_RESET);
-                                continuar = sc.nextLine();
+                                continuar = quiereContinuar();
                             }
                         }
 
@@ -137,15 +134,15 @@ public class BlackJack {
                 System.out.println("\n\n🛑 == Fin del juego == 🛑\n");
 
                 // Cuando sale comprueba quién ha ganado
-                if (pts1 < 21 && pts2 < 21){
-                    if (pts1 > pts2){
+                if (puntosJugador1 < 21 && pts2 < 21){
+                    if (puntosJugador1 > pts2){
                         System.out.println("🏆 Has ganado!!");
-                    }else if (pts1 < pts2){
+                    }else if (puntosJugador1 < pts2){
                         System.out.println("❌ Has perdido!!");
                     }else {
                         System.out.println("⚖ Empate!");
                     }
-                }else if (pts1 == 21){
+                }else if (puntosJugador1 == 21){
                     System.out.println("🏆 Has ganado!!");
                 }else{
                     System.out.println("❌ Has perdido!!");
@@ -153,7 +150,7 @@ public class BlackJack {
 
 
                 System.out.println("Puntos finales:");
-                System.out.println("Tú: "+pts1);
+                System.out.println("Tú: "+puntosJugador1);
                 System.out.println("Crupier: "+pts2);
                 Thread.sleep(2000);
                 System.out.println("\n\n\n");
@@ -182,6 +179,14 @@ public class BlackJack {
         }while (opcion != 3);
 
     }
+
+    private static String quiereContinuar() {
+        String continuar;
+        System.out.print(ANSI_BLUE + "¿Continuar? (s|n): " + ANSI_RESET);
+        continuar = sc.nextLine();
+        return continuar;
+    }
+
 
     private static String cartasDobles(int puntos1, int puntos2){
         StringBuilder representacion = new StringBuilder();
