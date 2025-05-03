@@ -16,8 +16,7 @@ public class BlackJack {
 
     public static void main(String[] args) throws InterruptedException {
         Random r = new Random();
-
-
+        
         String continuar;
         int opcion;
         int nuevaCarta1;
@@ -52,24 +51,19 @@ public class BlackJack {
                 System.out.println("\n🎲 -= Nueva Partida =- 🎴");
 
                 // Randomizador de cartas
-                int cartaDos;
                 int cartaUno = r.nextInt(12) + 1;
                 nuevaCarta1 = r.nextInt(12) + 1;
                 puntosJugador1 += cartaUno + nuevaCarta1;
 
-                cartaDos = r.nextInt(12) + 1;
+                int cartaDos = r.nextInt(12) + 1;
                 nuevaCarta2 = r.nextInt(12) + 1;
                 pts2 += cartaDos + nuevaCarta2;
 
                 // Mano del jugador
-                System.out.println("Tu mano: ");
-                System.out.println(cartasDobles(cartaUno, nuevaCarta1));
-                System.out.println("Llevas " + puntosJugador1 + " puntos");
+                manoJugador(cartaUno, nuevaCarta1, puntosJugador1);
 
                 // Mano del jugador
-                System.out.println("Mano del crupier: ");
-                System.out.println(cartasDobles(cartaDos, nuevaCarta2));
-                System.out.println("Crupier: " + pts2 + " puntos");
+                manoCrupier(cartaDos, nuevaCarta2, pts2);
 
                 if (puntosJugador1 < 21){
                     // Preguntar si continuar
@@ -93,15 +87,14 @@ public class BlackJack {
                         }
 
                         // Mano del jugador
-                        System.out.println("Tu mano: ");
-                        System.out.println(mostrarCarta(nuevaCarta1));
-                        System.out.println("Llevas " + puntosJugador1 + " puntos");
+                        manoJugador(0, nuevaCarta1, puntosJugador1);
 
                         // Mano del crupier (solo si ha robado cartas)
                         if (pts2 < 17) {
-                            System.out.println(mostrarCarta(nuevaCarta2));
+                            manoCrupier(0, nuevaCarta2, pts2);
+                        }else{
+                            System.out.println("Crupier: " + pts2 + " puntos");
                         }
-                        System.out.println("Crupier: " + pts2 + " puntos");
 
                         // Preguntar si continuar
                         if (puntosJugador1 <21){
@@ -116,8 +109,7 @@ public class BlackJack {
                         if (continuar.equals("n") && pts2 < 17){  // Si el jugador ya no quiere continuar Y el crupier tiene menos de 17 puntos, éste roba una última carta.
                             nuevaCarta2 = r.nextInt(12) + 1;
                             pts2 += nuevaCarta2;
-                            System.out.println(mostrarCarta(nuevaCarta2));
-                            System.out.println("Crupier: " + pts2 + " puntos");
+                            manoCrupier(0, nuevaCarta2, pts2);
                         }
 
                         Thread.sleep(650);
@@ -178,6 +170,30 @@ public class BlackJack {
 
         }while (opcion != 3);
 
+    }
+
+    private static void manoJugador(int cartaUno, int nuevaCarta1, int puntosJugador1) {
+        if (cartaUno == 0){
+            System.out.println("Tu mano: ");
+            System.out.println(mostrarCarta(nuevaCarta1));
+            System.out.println("Llevas " + puntosJugador1 + " puntos");
+        }else{
+            System.out.println("Tu mano: ");
+            System.out.println(cartasDobles(cartaUno, nuevaCarta1));
+            System.out.println("Llevas " + puntosJugador1 + " puntos");
+        }
+    }
+
+    private static void manoCrupier(int cartaDos, int nuevaCarta2, int pts2) {
+        if (cartaDos == 0){
+            System.out.println("Mano del crupier: ");
+            System.out.println(mostrarCarta(nuevaCarta2));
+            System.out.println("Crupier: " + pts2 + " puntos");
+        }else{
+            System.out.println("Mano del crupier: ");
+            System.out.println(cartasDobles(cartaDos, nuevaCarta2));
+            System.out.println("Crupier: " + pts2 + " puntos");
+        }
     }
 
     private static String quiereContinuar() {
