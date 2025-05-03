@@ -11,7 +11,8 @@ public class BlackJack {
     public static final String ANSI_BLUE = "\u001B[34m";
     public static final String ANSI_CYAN = "\u001B[36m";
     public static final String ANSI_RESET = "\u001B[0m";
-    
+    public static final int PUNTOS_GANAR = 21;
+
     public static Scanner sc = new Scanner(System.in);
 
     public static void main(String[] args) throws InterruptedException {
@@ -65,7 +66,8 @@ public class BlackJack {
                 // Mano del jugador
                 manoCrupier(cartaDos, nuevaCarta2, pts2);
 
-                if (puntosJugador1 < 21){
+                if (puntosJugador1 < PUNTOS_GANAR){
+
                     // Preguntar si continuar
                     continuar = quiereContinuar();
 
@@ -76,7 +78,7 @@ public class BlackJack {
                         continuar = quiereContinuar();
                     }
                     Thread.sleep(700);
-                    while (continuar.equals("s") && puntosJugador1 < 21){
+                    while (continuar.equals("s") && puntosJugador1 < PUNTOS_GANAR){
                         System.out.println("\n...........................");
                         nuevaCarta1 = r.nextInt(12) + 1;
                         puntosJugador1 += nuevaCarta1;
@@ -97,7 +99,7 @@ public class BlackJack {
                         }
 
                         // Preguntar si continuar
-                        if (puntosJugador1 <21){
+                        if (puntosJugador1 < PUNTOS_GANAR){
                             continuar = quiereContinuar();
 
                             while (!continuar.equalsIgnoreCase("s") && !continuar.equalsIgnoreCase("n")) {
@@ -126,7 +128,7 @@ public class BlackJack {
                 System.out.println("\n\n🛑 == Fin del juego == 🛑\n");
 
                 // Cuando sale comprueba quién ha ganado
-                if (puntosJugador1 < 21 && pts2 < 21){
+                if (puntosJugador1 < PUNTOS_GANAR && pts2 < PUNTOS_GANAR){
                     if (puntosJugador1 > pts2){
                         System.out.println("🏆 Has ganado!!");
                     }else if (puntosJugador1 < pts2){
@@ -134,7 +136,7 @@ public class BlackJack {
                     }else {
                         System.out.println("⚖ Empate!");
                     }
-                }else if (puntosJugador1 == 21){
+                }else if (puntosJugador1 == PUNTOS_GANAR){
                     System.out.println("🏆 Has ganado!!");
                 }else{
                     System.out.println("❌ Has perdido!!");
