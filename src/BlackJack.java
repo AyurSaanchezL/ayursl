@@ -142,7 +142,7 @@ public class BlackJack {
 
 
                 System.out.println("Puntos finales:");
-                System.out.println("Tú: "+puntosJugador1);
+                System.out.println("Jugador: "+puntosJugador1);
                 System.out.println("Crupier: "+pts2);
                 Thread.sleep(2000);
                 System.out.println("\n\n\n");
